@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="org.example.Main" />
+    <option name="MAIN_CLASS_NAME" value="ru.sfedu.bibliohub.BiblioHubClient" />
     <module name="BiblioHub" />
     <method v="2">
       <option name="Make" enabled="true" />
