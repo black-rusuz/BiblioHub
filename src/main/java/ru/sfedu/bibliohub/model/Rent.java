@@ -15,11 +15,12 @@ public class Rent implements Serializable {
 
     @Element
     @CsvBindByPosition(position = 1)
-    private Book book;
+    private Book book = new Book();
 
     @Element
     @CsvBindByPosition(position = 2)
-    private LibraryCard card;
+    private LibraryCard card = new LibraryCard() {
+    };
 
     @Attribute
     @CsvBindByPosition(position = 3)

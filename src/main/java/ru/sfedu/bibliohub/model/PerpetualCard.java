@@ -10,7 +10,7 @@ import java.util.Objects;
 public class PerpetualCard extends LibraryCard {
     @Attribute
     @CsvBindByPosition(position = 2)
-    private String reason;
+    private String reason = "";
 
     public PerpetualCard() {
     }

@@ -10,10 +10,10 @@ import java.util.Objects;
 public class TemporaryCard extends LibraryCard {
     @Attribute
     @CsvBindByPosition(position = 2)
-    private String startDate;
+    private String startDate = "";
     @Attribute
     @CsvBindByPosition(position = 3)
-    private String endDate;
+    private String endDate = "";
 
     public TemporaryCard() {
     }

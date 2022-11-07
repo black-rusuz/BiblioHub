@@ -15,11 +15,11 @@ public class Book implements Serializable {
 
     @Attribute
     @CsvBindByPosition(position = 1)
-    private String author;
+    private String author = "";
 
     @Attribute
     @CsvBindByPosition(position = 2)
-    private String title;
+    private String title = "";
 
     @Attribute
     @CsvBindByPosition(position = 3)

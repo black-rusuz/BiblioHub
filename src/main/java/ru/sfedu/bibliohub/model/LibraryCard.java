@@ -8,14 +8,14 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Element
-public class LibraryCard implements Serializable {
+public abstract class LibraryCard implements Serializable {
     @Attribute
     @CsvBindByPosition(position = 0)
     private long id;
 
     @Attribute
     @CsvBindByPosition(position = 1)
-    private String name;
+    private String name = "";
 
     public LibraryCard() {
     }
