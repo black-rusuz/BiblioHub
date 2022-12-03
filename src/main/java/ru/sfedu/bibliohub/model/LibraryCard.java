@@ -15,14 +15,56 @@ public abstract class LibraryCard implements Serializable {
 
     @Attribute
     @CsvBindByPosition(position = 1)
-    private String name = "";
+    private String firstName = "";
+
+    @Attribute
+    @CsvBindByPosition(position = 1)
+    private String lastName = "";
+
+    @Attribute
+    @CsvBindByPosition(position = 1)
+    private String birthDate = "";
+
+    @Attribute
+    @CsvBindByPosition(position = 1)
+    private String work = "";
 
     public LibraryCard() {
     }
 
-    public LibraryCard(long id, String name) {
+    public LibraryCard(long id, String firstName, String lastName, String birthDate, String work) {
         setId(id);
-        setName(name);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setBirthDate(birthDate);
+        setWork(work);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LibraryCard that)) return false;
+        return getId() == that.getId()
+                && Objects.equals(getFirstName(), that.getFirstName())
+                && Objects.equals(getLastName(), that.getLastName())
+                && Objects.equals(getBirthDate(), that.getBirthDate())
+                && Objects.equals(getWork(), that.getWork());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getFirstName(), getLastName(), getBirthDate(), getWork());
+    }
+
+    @Override
+    public String toString() {
+        return "LibraryCard{" +
+                "id=" + getId() +
+                ", firstName='" + getFirstName() + '\'' +
+                ", lastName='" + getLastName() + '\'' +
+                ", birthDate='" + getBirthDate() + '\'' +
+                ", work='" + getWork() + '\'' +
+                '}';
     }
 
     public long getId() {
@@ -33,31 +75,35 @@ public abstract class LibraryCard implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof LibraryCard that)) return false;
-        return getId() == that.getId()&& Objects.equals(getName(), that.getName());
+    public String getLastName() {
+        return lastName;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName());
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    @Override
-    public String toString() {
-        return "LibraryCard{" +
-                "id=" + getId() +
-                ", name='" + getName() + '\'' +
-                '}';
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getWork() {
+        return work;
+    }
+
+    public void setWork(String work) {
+        this.work = work;
     }
 }

@@ -15,17 +15,9 @@ public class PerpetualCard extends LibraryCard {
     public PerpetualCard() {
     }
 
-    public PerpetualCard(long id, String name, String reason) {
-        super(id, name);
+    public PerpetualCard(long id, String firstName, String lastName, String birthDate, String work, String reason) {
+        super(id, firstName, lastName, birthDate, work);
         setReason(reason);
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
     }
 
     @Override
@@ -44,9 +36,20 @@ public class PerpetualCard extends LibraryCard {
     @Override
     public String toString() {
         return "PerpetualCard{" +
-                "id=" + super.getId() +
-                ", name='" + super.getName() + '\'' +
-                ", reason='" + reason + '\'' +
+                "id=" + getId() +
+                ", firstName='" + getFirstName() + '\'' +
+                ", lastName='" + getLastName() + '\'' +
+                ", birthDate='" + getBirthDate() + '\'' +
+                ", work='" + getWork() + '\'' +
+                ", reason='" + getReason() + '\'' +
                 '}';
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

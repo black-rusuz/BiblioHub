@@ -41,6 +41,33 @@ public class Rent implements Serializable {
         setReturnDate(returnDate);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Rent rent)) return false;
+        return getId() == rent.getId()
+                && Objects.equals(getBook(), rent.getBook())
+                && Objects.equals(getCard(), rent.getCard())
+                && Objects.equals(getRentDate(), rent.getRentDate())
+                && Objects.equals(getReturnDate(), rent.getReturnDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getBook(), getCard(), getRentDate(), getReturnDate());
+    }
+
+    @Override
+    public String toString() {
+        return "Rent{" +
+                "id=" + getId() +
+                ", book=" + getBook() +
+                ", card=" + getCard() +
+                ", rentDate='" + getRentDate() + '\'' +
+                ", returnDate='" + getReturnDate() + '\'' +
+                '}';
+    }
+
     public long getId() {
         return id;
     }
@@ -79,32 +106,5 @@ public class Rent implements Serializable {
 
     public void setReturnDate(String returnDate) {
         this.returnDate = returnDate;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Rent rent)) return false;
-        return getId() == rent.getId()
-                && Objects.equals(getBook(), rent.getBook())
-                && Objects.equals(getCard(), rent.getCard())
-                && Objects.equals(getRentDate(), rent.getRentDate())
-                && Objects.equals(getReturnDate(), rent.getReturnDate());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getBook(), getCard(), getRentDate(), getReturnDate());
-    }
-
-    @Override
-    public String toString() {
-        return "Rent{" +
-                "id=" + getId() +
-                ", book=" + getBook() +
-                ", card=" + getCard() +
-                ", rentDate='" + getRentDate() + '\'' +
-                ", returnDate='" + getReturnDate() + '\'' +
-                '}';
     }
 }

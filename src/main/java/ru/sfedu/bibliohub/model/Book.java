@@ -35,6 +35,31 @@ public class Book implements Serializable {
         setYear(year);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book book)) return false;
+        return getId() == book.getId()
+                && getYear() == book.getYear()
+                && Objects.equals(getAuthor(), book.getAuthor())
+                && Objects.equals(getTitle(), book.getTitle());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getAuthor(), getTitle(), getYear());
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + getId() +
+                ", author='" + getAuthor() + '\'' +
+                ", title='" + getTitle() + '\'' +
+                ", year=" + getYear() +
+                '}';
+    }
+
     public long getId() {
         return id;
     }
@@ -65,30 +90,5 @@ public class Book implements Serializable {
 
     public void setYear(int year) {
         this.year = year;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Book book)) return false;
-        return getId() == book.getId()
-                && getYear() == book.getYear()
-                && Objects.equals(getAuthor(), book.getAuthor())
-                && Objects.equals(getTitle(), book.getTitle());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getAuthor(), getTitle(), getYear());
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + getId() +
-                ", author='" + getAuthor() + '\'' +
-                ", title='" + getTitle() + '\'' +
-                ", year=" + getYear() +
-                '}';
     }
 }

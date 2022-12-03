@@ -18,10 +18,37 @@ public class TemporaryCard extends LibraryCard {
     public TemporaryCard() {
     }
 
-    public TemporaryCard(long id, String name, String startDate, String endDate) {
-        super(id, name);
+    public TemporaryCard(long id, String firstName, String lastName, String birthDate, String work, String startDate, String endDate) {
+        super(id, firstName, lastName, birthDate, work);
         setStartDate(startDate);
         setEndDate(endDate);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TemporaryCard that)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(getStartDate(), that.getStartDate())
+                && Objects.equals(getEndDate(), that.getEndDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getStartDate(), getEndDate());
+    }
+
+    @Override
+    public String toString() {
+        return "TemporaryCard{" +
+                "id=" + getId() +
+                ", firstName='" + getFirstName() + '\'' +
+                ", lastName='" + getLastName() + '\'' +
+                ", birthDate='" + getBirthDate() + '\'' +
+                ", work='" + getWork() + '\'' +
+                ", startDate='" + getStartDate() + '\'' +
+                ", endDate='" + getEndDate() + '\'' +
+                '}';
     }
 
     public String getStartDate() {
@@ -38,28 +65,5 @@ public class TemporaryCard extends LibraryCard {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TemporaryCard that)) return false;
-        if (!super.equals(o)) return false;
-        return Objects.equals(getStartDate(), that.getStartDate()) && Objects.equals(getEndDate(), that.getEndDate());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getStartDate(), getEndDate());
-    }
-
-    @Override
-    public String toString() {
-        return "TemporaryCard{" +
-                "id=" + super.getId() +
-                ", name='" + super.getName() + '\'' +
-                ", startDate='" + getStartDate() + '\'' +
-                ", endDate='" + getEndDate() + '\'' +
-                '}';
     }
 }
