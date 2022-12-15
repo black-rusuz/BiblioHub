@@ -18,10 +18,6 @@ public class DataProviderXml extends FileDataProvider {
         fileNamePattern = ConfigurationUtil.getConfigurationEntry(Constants.XML_PATH) + "%s.xml";
     }
 
-    public DataProviderXml(boolean test) throws IOException {
-        if (test) fileNamePattern = ConfigurationUtil.getConfigurationEntry(Constants.XML_PATH) + "TEST_%s.xml";
-    }
-
     @Override
     protected <T> List<T> read(Class<T> type) {
         List<T> list = new ArrayList<>();

@@ -22,7 +22,7 @@ public class ReflectUtils {
         }
     }
 
-    private static <T> Method getId(Class<T> type) {
+    private static <T> Method getIdMethod(Class<T> type) {
         try {
             return type.getMethod("getId");
         } catch (NoSuchMethodException e) {
@@ -30,7 +30,7 @@ public class ReflectUtils {
         }
     }
 
-    private static <T> Method setId(Class<T> type) {
+    private static <T> Method setIdMethod(Class<T> type) {
         try {
             return type.getMethod("setId", Long.TYPE);
         } catch (NoSuchMethodException e) {
@@ -39,7 +39,7 @@ public class ReflectUtils {
     }
 
     public static <T> long getId(T bean) {
-        Method getId = getId(bean.getClass());
+        Method getId = getIdMethod(bean.getClass());
         try {
             return (long) getId.invoke(bean);
         } catch (InvocationTargetException | IllegalAccessException e) {
@@ -48,7 +48,7 @@ public class ReflectUtils {
     }
 
     public static <T> void setId(T bean, long id) {
-        Method getId = setId(bean.getClass());
+        Method getId = setIdMethod(bean.getClass());
         try {
             getId.invoke(bean, id);
         } catch (InvocationTargetException | IllegalAccessException e) {
