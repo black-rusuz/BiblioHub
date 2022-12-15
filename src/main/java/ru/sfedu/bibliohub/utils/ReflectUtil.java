@@ -4,7 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class ReflectUtils {
+public class ReflectUtil {
     private static <T> Constructor<T> getConstructor(Class<T> type) {
         try {
             return type.getConstructor();
@@ -30,19 +30,19 @@ public class ReflectUtils {
         }
     }
 
-    private static <T> Method setIdMethod(Class<T> type) {
-        try {
-            return type.getMethod("setId", Long.TYPE);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static <T> long getId(T bean) {
         Method getId = getIdMethod(bean.getClass());
         try {
             return (long) getId.invoke(bean);
         } catch (InvocationTargetException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static <T> Method setIdMethod(Class<T> type) {
+        try {
+            return type.getMethod("setId", Long.TYPE);
+        } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
     }

@@ -2,7 +2,7 @@ package ru.sfedu.bibliohub.api;
 
 import ru.sfedu.bibliohub.model.bean.*;
 import ru.sfedu.bibliohub.utils.Constants;
-import ru.sfedu.bibliohub.utils.ReflectUtils;
+import ru.sfedu.bibliohub.utils.ReflectUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,7 +65,7 @@ abstract public class FileDataProvider extends AbstractDataProvider {
      */
     private <T> boolean hasSavedId(Class<T> type, long id) {
         T oldBean = getById(type, id);
-        return ReflectUtils.getId(oldBean) != 0;
+        return ReflectUtil.getId(oldBean) != 0;
     }
 
     
@@ -76,21 +76,21 @@ abstract public class FileDataProvider extends AbstractDataProvider {
     }
 
     private <T> T getById(Class<T> type, long id) {
-        List<T> list = getAll(type).stream().filter(e -> ReflectUtils.getId(e) == id).toList();
-        return list.isEmpty() ? ReflectUtils.getEmptyObject(type) : list.get(0);
+        List<T> list = getAll(type).stream().filter(e -> ReflectUtil.getId(e) == id).toList();
+        return list.isEmpty() ? ReflectUtil.getEmptyObject(type) : list.get(0);
     }
 
     private <T> long insert(Class<T> type, T bean) {
-        long id = ReflectUtils.getId(bean);
+        long id = ReflectUtil.getId(bean);
         if (hasSavedId(type, id)) {
-            ReflectUtils.setId(bean, System.currentTimeMillis());
+            ReflectUtil.setId(bean, System.currentTimeMillis());
         }
 
         List<T> list = getAll(type);
         list.add(bean);
         write(list, type, Constants.METHOD_NAME_APPEND);
 
-        return ReflectUtils.getId(bean);
+        return ReflectUtil.getId(bean);
     }
 
     private <T> boolean delete(Class<T> type, long id) {
@@ -100,12 +100,12 @@ abstract public class FileDataProvider extends AbstractDataProvider {
         }
 
         List<T> list = getAll(type);
-        list.removeIf(e -> ReflectUtils.getId(e) == id);
+        list.removeIf(e -> ReflectUtil.getId(e) == id);
         return write(list, type, Constants.METHOD_NAME_DELETE);
     }
 
     private <T> boolean update(Class<T> type, T bean) {
-        long id = ReflectUtils.getId(bean);
+        long id = ReflectUtil.getId(bean);
         if (!hasSavedId(type, id)) {
             log.warn(Constants.NOT_FOUND);
             return false;
