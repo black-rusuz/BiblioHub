@@ -26,6 +26,9 @@ public class Constants {
     public static final String METHOD_NAME_DELETE = "Delete";
     public static final String METHOD_NAME_UPDATE = "Update";
 
+    // Info
+    public static final String NOT_FOUND = "Record with this ID not found";
+
     // CLI
     public static final String XML = "XML";
     public static final String JDBC = "JDBC";
