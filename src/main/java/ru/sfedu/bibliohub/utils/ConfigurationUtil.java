@@ -27,9 +27,7 @@ public class ConfigurationUtil {
     }
 
     private static Properties getConfiguration() throws IOException {
-        if (configuration.isEmpty()) {
-            loadConfiguration();
-        }
+        if (configuration.isEmpty()) loadConfiguration();
         return configuration;
     }
 
@@ -39,15 +37,16 @@ public class ConfigurationUtil {
      * @throws IOException In case of the configuration file read failure
      */
     private static void loadConfiguration() throws IOException {
-        File nf = new File(DEFAULT_CONFIG_PATH);
-        if (System.getProperty(Constants.ENVIRONMENT_VARIABLE) != null) {
-            File file = new File(System.getProperty(Constants.ENVIRONMENT_VARIABLE));
-            if (file.exists())
-                nf = file;
-            else
-                log.error("Your environment configuration file not found. Default loaded.");
+        File file = new File(DEFAULT_CONFIG_PATH);
+        String userPath = System.getProperty(Constants.ENVIRONMENT_VARIABLE);
+
+        if (userPath != null) {
+            File userFile = new File(userPath);
+            if (userFile.exists()) file = userFile;
+            else log.error("Your environment configuration file not found. Default loaded.");
         }
-        try (InputStream in = new FileInputStream(nf)) {
+
+        try (InputStream in = new FileInputStream(file)) {
             configuration.load(in);
         } catch (IOException e) {
             throw new IOException(e);
