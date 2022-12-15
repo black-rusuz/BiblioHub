@@ -18,7 +18,8 @@ import java.io.IOException;
 public class MongoUtil {
     private static final Logger log = LogManager.getLogger(MongoUtil.class);
 
-    public MongoUtil() {}
+    public MongoUtil() {
+    }
 
     private static MongoClient initClient() {
         try {
@@ -41,7 +42,7 @@ public class MongoUtil {
             MongoDatabase mongoDatabase = initClient().getDatabase(database);
             InsertOneResult insertOneResult = mongoDatabase.getCollection(collection)
                     .insertOne(Document.parse(objectToString(object)));
-            if(!insertOneResult.wasAcknowledged())
+            if (!insertOneResult.wasAcknowledged())
                 throw new IllegalArgumentException();
         } catch (Exception e) {
             log.error(e.getMessage());

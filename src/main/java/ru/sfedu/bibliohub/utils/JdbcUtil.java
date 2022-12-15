@@ -1,10 +1,5 @@
 package ru.sfedu.bibliohub.utils;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 public class JdbcUtil {
     public static final String tablePrefix = "table_";
 

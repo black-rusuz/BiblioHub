@@ -2,9 +2,9 @@ package ru.sfedu.bibliohub.api;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
-import ru.sfedu.bibliohub.utils.Constants;
 import ru.sfedu.bibliohub.model.XmlWrapper;
 import ru.sfedu.bibliohub.utils.ConfigurationUtil;
+import ru.sfedu.bibliohub.utils.Constants;
 
 import java.io.File;
 import java.io.FileReader;
@@ -16,6 +16,10 @@ import java.util.List;
 public class DataProviderXml extends FileDataProvider {
     public DataProviderXml() throws IOException {
         fileNamePattern = ConfigurationUtil.getConfigurationEntry(Constants.XML_PATH) + "%s.xml";
+    }
+
+    public DataProviderXml(boolean test) throws IOException {
+        if (test) fileNamePattern = ConfigurationUtil.getConfigurationEntry(Constants.XML_PATH) + "TEST_%s.xml";
     }
 
     @Override
