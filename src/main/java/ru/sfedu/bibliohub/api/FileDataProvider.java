@@ -55,7 +55,6 @@ abstract public class FileDataProvider extends AbstractDataProvider {
         return String.format(fileNamePattern, type.getSimpleName());
     }
 
-
     private <T> boolean hasSavedId(Class<T> type, long id) {
         T oldBean = getById(type, id);
         return ReflectUtils.getId(oldBean) != 0;
@@ -67,7 +66,10 @@ abstract public class FileDataProvider extends AbstractDataProvider {
 
     private <T> T getById(Class<T> type, long id) {
         List<T> list = getAll(type).stream().filter(e -> ReflectUtils.getId(e) == id).toList();
-        if (list.isEmpty()) return ReflectUtils.getEmptyObject(type);
+        if (list.isEmpty()) {
+            log.warn(Constants.NOT_FOUND);
+            return ReflectUtils.getEmptyObject(type);
+        }
         else return list.get(0);
     }
 

@@ -30,6 +30,9 @@ public class TestArea {
         Book bb = dp.getBook(b.getId());
         log.info(dp.getBooks());
 
+        Book bbb = dp.getBook(321);
+        log.info(bbb);
+
         bb.setAuthor("aASDasdasdasdasdasd");
         boolean u = dp.updateBook(bb);
         log.info(dp.getBooks());
