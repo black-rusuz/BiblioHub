@@ -2,14 +2,15 @@ package ru.sfedu.artsale.api;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import ru.sfedu.bibliohub.api.AbstractDataProvider;
 import ru.sfedu.bibliohub.api.DataProviderXml;
 import ru.sfedu.bibliohub.model.bean.Book;
+import ru.sfedu.bibliohub.model.bean.PerpetualCard;
+import ru.sfedu.bibliohub.model.bean.Rent;
+import ru.sfedu.bibliohub.model.bean.TemporaryCard;
 
 import java.io.IOException;
-import java.util.List;
 
 
 public class TestArea {
@@ -41,9 +42,71 @@ public class TestArea {
         log.info(dp.getBooks());
     }
 
-    @AfterEach
-    void clear() {
-        List<Book> books = dp.getBooks();
-        books.forEach(e -> dp.deleteBook(e.getId()));
+    @Test
+    void test1() {
+        log.info(dp.getPerpetualCards());
+
+        PerpetualCard card = new PerpetualCard(12, "Same", "Person", "20.02.2014", "Work", "Good Boy");
+        dp.insertPerpetualCard(card);
+        log.info(dp.getPerpetualCards());
+
+        PerpetualCard card2 = dp.getPerpetualCard(card.getId());
+        log.info(dp.getPerpetualCards());
+
+        PerpetualCard card3 = dp.getPerpetualCard(321);
+        log.info(card3);
+
+        card2.setWork("Rubium");
+        boolean u = dp.updatePerpetualCard(card2);
+        log.info(dp.getPerpetualCards());
+
+        boolean d = dp.deletePerpetualCard(card2.getId());
+        log.info(dp.getPerpetualCards());
+    }
+
+    @Test
+    void test2() {
+        log.info(dp.getTemporaryCards());
+
+        TemporaryCard card = new TemporaryCard(12, "Same", "Person", "20.02.2014", "Work", "15.12.2022", "15.01.2023");
+        dp.insertTemporaryCard(card);
+        log.info(dp.getTemporaryCards());
+
+        TemporaryCard card2 = dp.getTemporaryCard(card.getId());
+        log.info(dp.getTemporaryCards());
+
+        TemporaryCard card3 = dp.getTemporaryCard(321);
+        log.info(card3);
+
+        card2.setWork("Rubium");
+        boolean u = dp.updateTemporaryCard(card2);
+        log.info(dp.getTemporaryCards());
+
+        boolean d = dp.deleteTemporaryCard(card2.getId());
+        log.info(dp.getTemporaryCards());
+    }
+
+    @Test
+    void test3() {
+        log.info(dp.getRents());
+
+        Book b = new Book(123, "qwe", "asd", 1);
+        PerpetualCard card = new PerpetualCard(12, "Same", "Person", "20.02.2014", "Work", "Good Boy");
+        Rent rent = new Rent(1245, b, card, "16.12.2022", "16.01.2023");
+        dp.insertRent(rent);
+        log.info(dp.getRents());
+
+        Rent rent2 = dp.getRent(rent.getId());
+        log.info(rent2);
+
+        Rent rent3 = dp.getRent(123123);
+        log.info(rent3);
+
+        rent2.setReturnDate("16.02.2023");
+        boolean u = dp.updateRent(rent2);
+        log.info(dp.getRents());
+
+        boolean d = dp.deleteRent(rent2.getId());
+        log.info(dp.getRents());
     }
 }

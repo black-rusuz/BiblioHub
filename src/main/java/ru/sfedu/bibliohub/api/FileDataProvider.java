@@ -1,6 +1,6 @@
 package ru.sfedu.bibliohub.api;
 
-import ru.sfedu.bibliohub.model.bean.Book;
+import ru.sfedu.bibliohub.model.bean.*;
 import ru.sfedu.bibliohub.utils.Constants;
 import ru.sfedu.bibliohub.utils.ReflectUtils;
 
@@ -55,10 +55,21 @@ abstract public class FileDataProvider extends AbstractDataProvider {
         return String.format(fileNamePattern, type.getSimpleName());
     }
 
+    /**
+     * Check for duplicated ID's
+     *
+     * @param type bean to work with
+     * @param id   ID
+     * @param <T>  generic class of bean
+     * @return true if ID already exists
+     */
     private <T> boolean hasSavedId(Class<T> type, long id) {
         T oldBean = getById(type, id);
         return ReflectUtils.getId(oldBean) != 0;
     }
+
+    
+    // * GENERICS
 
     private <T> List<T> getAll(Class<T> type) {
         return read(type);
@@ -66,11 +77,7 @@ abstract public class FileDataProvider extends AbstractDataProvider {
 
     private <T> T getById(Class<T> type, long id) {
         List<T> list = getAll(type).stream().filter(e -> ReflectUtils.getId(e) == id).toList();
-        if (list.isEmpty()) {
-            log.warn(Constants.NOT_FOUND);
-            return ReflectUtils.getEmptyObject(type);
-        }
-        else return list.get(0);
+        return list.isEmpty() ? ReflectUtils.getEmptyObject(type) : list.get(0);
     }
 
     private <T> long insert(Class<T> type, T bean) {
@@ -109,6 +116,9 @@ abstract public class FileDataProvider extends AbstractDataProvider {
         return write(list, type, Constants.METHOD_NAME_UPDATE);
     }
 
+
+    // * CRUD
+
     @Override
     public List<Book> getBooks() {
         return getAll(Book.class);
@@ -132,5 +142,83 @@ abstract public class FileDataProvider extends AbstractDataProvider {
     @Override
     public boolean updateBook(Book book) {
         return update(Book.class, book);
+    }
+
+
+    @Override
+    public List<PerpetualCard> getPerpetualCards() {
+        return getAll(PerpetualCard.class);
+    }
+
+    @Override
+    public PerpetualCard getPerpetualCard(long id) {
+        return getById(PerpetualCard.class, id);
+    }
+
+    @Override
+    public long insertPerpetualCard(PerpetualCard perpetualCard) {
+        return insert(PerpetualCard.class, perpetualCard);
+    }
+
+    @Override
+    public boolean deletePerpetualCard(long id) {
+        return delete(PerpetualCard.class, id);
+    }
+
+    @Override
+    public boolean updatePerpetualCard(PerpetualCard perpetualCard) {
+        return update(PerpetualCard.class, perpetualCard);
+    }
+
+
+    @Override
+    public List<TemporaryCard> getTemporaryCards() {
+        return getAll(TemporaryCard.class);
+    }
+
+    @Override
+    public TemporaryCard getTemporaryCard(long id) {
+        return getById(TemporaryCard.class, id);
+    }
+
+    @Override
+    public long insertTemporaryCard(TemporaryCard temporaryCard) {
+        return insert(TemporaryCard.class, temporaryCard);
+    }
+
+    @Override
+    public boolean deleteTemporaryCard(long id) {
+        return delete(TemporaryCard.class, id);
+    }
+
+    @Override
+    public boolean updateTemporaryCard(TemporaryCard temporaryCard) {
+        return update(TemporaryCard.class, temporaryCard);
+    }
+
+
+    @Override
+    public List<Rent> getRents() {
+        return getAll(Rent.class);
+    }
+
+    @Override
+    public Rent getRent(long id) {
+        return getById(Rent.class, id);
+    }
+
+    @Override
+    public long insertRent(Rent rent) {
+        return insert(Rent.class, rent);
+    }
+
+    @Override
+    public boolean deleteRent(long id) {
+        return delete(Rent.class, id);
+    }
+
+    @Override
+    public boolean updateRent(Rent rent) {
+        return update(Rent.class, rent);
     }
 }
