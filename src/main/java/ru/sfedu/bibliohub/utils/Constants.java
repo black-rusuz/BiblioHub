@@ -20,6 +20,10 @@ public class Constants {
 
     // Internal
     public static final String ENVIRONMENT_VARIABLE = "env";
+    public static final String GET_ID = "getId";
+    public static final String SET_ID = "setId";
+    public static final String XML_PATTERN = "%s.xml";
+    public static final String CSV_PATTERN = "%s.csv";
 
     // CRUD
     public static final String METHOD_NAME_APPEND = "Append";

@@ -24,7 +24,7 @@ public class ReflectUtil {
 
     private static <T> Method getIdMethod(Class<T> type) {
         try {
-            return type.getMethod("getId");
+            return type.getMethod(Constants.GET_ID);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
@@ -41,7 +41,7 @@ public class ReflectUtil {
 
     private static <T> Method setIdMethod(Class<T> type) {
         try {
-            return type.getMethod("setId", Long.TYPE);
+            return type.getMethod(Constants.SET_ID, Long.TYPE);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
