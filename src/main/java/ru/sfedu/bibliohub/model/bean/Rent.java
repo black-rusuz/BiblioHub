@@ -1,8 +1,11 @@
 package ru.sfedu.bibliohub.model.bean;
 
 import com.opencsv.bean.CsvBindByPosition;
+import com.opencsv.bean.CsvCustomBindByPosition;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
+import ru.sfedu.bibliohub.utils.converters.BookConverter;
+import ru.sfedu.bibliohub.utils.converters.LibraryCardConverter;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -14,11 +17,11 @@ public class Rent implements Serializable {
     private long id;
 
     @Element
-    @CsvBindByPosition(position = 1)
+    @CsvCustomBindByPosition(position = 1, converter = BookConverter.class)
     private Book book = new Book();
 
     @Element
-    @CsvBindByPosition(position = 2)
+    @CsvCustomBindByPosition(position = 2, converter = LibraryCardConverter.class)
     private LibraryCard card = new LibraryCard() {
     };
 

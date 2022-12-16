@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import ru.sfedu.bibliohub.api.AbstractDataProvider;
-import ru.sfedu.bibliohub.api.DataProviderXml;
+import ru.sfedu.bibliohub.api.DataProviderCsv;
 import ru.sfedu.bibliohub.model.bean.Book;
 import ru.sfedu.bibliohub.model.bean.PerpetualCard;
 import ru.sfedu.bibliohub.model.bean.Rent;
@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class TestArea {
     protected final Logger log = LogManager.getLogger(TestArea.class);
-    protected final AbstractDataProvider dp = new DataProviderXml();
+    protected final AbstractDataProvider dp = new DataProviderCsv();
 
     public TestArea() throws IOException {
     }
