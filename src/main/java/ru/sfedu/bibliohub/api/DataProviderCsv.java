@@ -18,8 +18,12 @@ import java.util.List;
 
 public class DataProviderCsv extends FileDataProvider {
 
-    public DataProviderCsv() throws IOException {
-        fileNamePattern = ConfigurationUtil.getConfigurationEntry(Constants.CSV_PATH) + Constants.CSV_PATTERN;
+    public DataProviderCsv() {
+        try {
+            fileNamePattern = ConfigurationUtil.getConfigurationEntry(Constants.CSV_PATH) + Constants.CSV_PATTERN;
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
     }
 
     @Override

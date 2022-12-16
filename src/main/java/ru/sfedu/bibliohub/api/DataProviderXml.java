@@ -15,8 +15,12 @@ import java.util.List;
 
 public class DataProviderXml extends FileDataProvider {
 
-    public DataProviderXml() throws IOException {
-        fileNamePattern = ConfigurationUtil.getConfigurationEntry(Constants.XML_PATH) + Constants.XML_PATTERN;
+    public DataProviderXml() {
+        try {
+            fileNamePattern = ConfigurationUtil.getConfigurationEntry(Constants.XML_PATH) + Constants.XML_PATTERN;
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
     }
 
     @Override

@@ -1,6 +1,9 @@
 package ru.sfedu.bibliohub.api;
 
-import ru.sfedu.bibliohub.model.bean.*;
+import ru.sfedu.bibliohub.model.bean.Book;
+import ru.sfedu.bibliohub.model.bean.PerpetualCard;
+import ru.sfedu.bibliohub.model.bean.Rent;
+import ru.sfedu.bibliohub.model.bean.TemporaryCard;
 import ru.sfedu.bibliohub.utils.Constants;
 import ru.sfedu.bibliohub.utils.ReflectUtil;
 
@@ -10,9 +13,6 @@ import java.util.List;
 
 abstract public class FileDataProvider extends AbstractDataProvider {
     protected String fileNamePattern;
-
-    public FileDataProvider() throws IOException {
-    }
 
     /**
      * Reads bean list from file.
@@ -68,7 +68,7 @@ abstract public class FileDataProvider extends AbstractDataProvider {
         return ReflectUtil.getId(oldBean) != 0;
     }
 
-    
+
     // * GENERICS
 
     private <T> List<T> getAll(Class<T> type) {

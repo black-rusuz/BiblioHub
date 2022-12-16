@@ -18,10 +18,16 @@ import java.util.UUID;
 
 public abstract class AbstractDataProvider {
     protected final Logger log = LogManager.getLogger(this.getClass());
-    private final boolean MONGO_ENABLE = Boolean.parseBoolean(ConfigurationUtil.getConfigurationEntry(Constants.MONGO_ENABLE));
-    private final String MONGO_ACTOR = ConfigurationUtil.getConfigurationEntry(Constants.MONGO_ACTOR);
+    private boolean MONGO_ENABLE = false;
+    private String MONGO_ACTOR = "";
 
-    public AbstractDataProvider() throws IOException {
+    public AbstractDataProvider() {
+        try {
+            MONGO_ENABLE = Boolean.parseBoolean(ConfigurationUtil.getConfigurationEntry(Constants.MONGO_ENABLE));
+            MONGO_ACTOR = ConfigurationUtil.getConfigurationEntry(Constants.MONGO_ACTOR);
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
     }
 
     // Service
