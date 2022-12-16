@@ -10,18 +10,13 @@ import ru.sfedu.bibliohub.model.bean.PerpetualCard;
 import ru.sfedu.bibliohub.model.bean.Rent;
 import ru.sfedu.bibliohub.model.bean.TemporaryCard;
 
-import java.io.IOException;
-
 
 public class TestArea {
     protected final Logger log = LogManager.getLogger(TestArea.class);
     protected final AbstractDataProvider dp = new DataProviderCsv();
 
-    public TestArea() throws IOException {
-    }
-
     @Test
-    void test() {
+    void books() {
         log.info(dp.getBooks());
 
         Book b = new Book(123, "qwe", "asd", 1);
@@ -43,7 +38,7 @@ public class TestArea {
     }
 
     @Test
-    void test1() {
+    void pCards() {
         log.info(dp.getPerpetualCards());
 
         PerpetualCard card = new PerpetualCard(12, "Same", "Person", "20.02.2014", "Work", "Good Boy");
@@ -65,7 +60,7 @@ public class TestArea {
     }
 
     @Test
-    void test2() {
+    void tCards() {
         log.info(dp.getTemporaryCards());
 
         TemporaryCard card = new TemporaryCard(12, "Same", "Person", "20.02.2014", "Work", "15.12.2022", "15.01.2023");
@@ -87,7 +82,7 @@ public class TestArea {
     }
 
     @Test
-    void test3() {
+    void rents() {
         log.info(dp.getRents());
 
         Book b = new Book(123, "qwe", "asd", 1);
