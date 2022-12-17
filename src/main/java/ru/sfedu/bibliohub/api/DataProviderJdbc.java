@@ -37,13 +37,11 @@ public  class DataProviderJdbc extends AbstractDataProvider {
     // READ
 
     private <T> List<T> read(Class<T> type) {
-        String tableName = JdbcUtil.getTableName(type);
-        return read(type, JdbcUtil.selectAllFromTable(tableName));
+        return read(type, JdbcUtil.selectAllFromTable(type));
     }
 
     private <T> List<T> read(Class<T> type, long id) {
-        String tableName = JdbcUtil.getTableName(type);
-        return read(type, JdbcUtil.selectFromTableById(tableName, id));
+        return read(type, JdbcUtil.selectFromTableById(type, id));
     }
 
     private <T> List<T> read(Class<T> type, String sql) {
@@ -79,11 +77,10 @@ public  class DataProviderJdbc extends AbstractDataProvider {
     }
 
     private <T> boolean write(String methodName, T bean, long id) {
-        String tableName = JdbcUtil.getTableName(bean.getClass());
         String sql = switch (methodName) {
-            case Constants.METHOD_NAME_APPEND -> JdbcUtil.insertIntoTableValues(tableName, bean);
-            case Constants.METHOD_NAME_DELETE -> JdbcUtil.deleteFromTableById(tableName, id);
-            case Constants.METHOD_NAME_UPDATE -> JdbcUtil.updateTableSetById(tableName, bean, id);
+            case Constants.METHOD_NAME_APPEND -> JdbcUtil.insertIntoTableValues(bean);
+            case Constants.METHOD_NAME_DELETE -> JdbcUtil.deleteFromTableById(bean, id);
+            case Constants.METHOD_NAME_UPDATE -> JdbcUtil.updateTableSetById(bean, id);
             default -> "";
         };
 

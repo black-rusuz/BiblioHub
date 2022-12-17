@@ -15,7 +15,7 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name="ru.sfedu.bibliohub.BiblioHubClient" level="info"/>
+        <Logger name="ru.sfedu.bibliohub.BiblioHubClient"/>
         <Root level="info">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="File"/>
