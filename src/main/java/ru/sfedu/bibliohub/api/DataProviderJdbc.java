@@ -7,6 +7,7 @@ import ru.sfedu.bibliohub.model.bean.TemporaryCard;
 import ru.sfedu.bibliohub.utils.ConfigurationUtil;
 import ru.sfedu.bibliohub.utils.Constants;
 import ru.sfedu.bibliohub.utils.JdbcUtil;
+import ru.sfedu.bibliohub.utils.ReflectUtil;
 
 import java.io.IOException;
 import java.sql.*;
@@ -95,121 +96,55 @@ public  class DataProviderJdbc extends AbstractDataProvider {
         }
     }
 
-    // CRUD
+    // GENERICS
 
     @Override
-    public List<Book> getBooks() {
-        return read(Book.class);
+    protected  <T> List<T> getAll(Class<T> type) {
+        return read(type);
     }
 
     @Override
-    public Book getBook(long id) {
-        List<Book> list = read(Book.class, id);
-        return list.isEmpty() ? new Book() : list.get(0);
+    protected <T> T getById(Class<T> type, long id) {
+        List<T> list = read(type, id);
+        return list.isEmpty() ? ReflectUtil.getEmptyObject(type) : list.get(0);
     }
 
     @Override
-    public long insertBook(Book book) {
-        long id = book.getId();
-        if (getBook(id).getId() != 0)
-            book.setId(System.currentTimeMillis());
-        write(Constants.METHOD_NAME_APPEND, book, book.getId());
-        return book.getId();
+    protected <T> long insert(Class<T> type, T bean) {
+        long id = ReflectUtil.getId(bean);
+        if (hasSavedId(type, id)) {
+            ReflectUtil.setId(bean, System.currentTimeMillis());
+        }
+
+        List<T> list = getAll(type);
+        list.add(bean);
+        write(Constants.METHOD_NAME_APPEND, bean, id);
+
+        return ReflectUtil.getId(bean);
     }
 
     @Override
-    public boolean deleteBook(long id) {
-        Book oldBook = getBook(id);
-        if (oldBook.getId() == 0) {
+    protected <T> boolean delete(Class<T> type, long id) {
+        if (!hasSavedId(type, id)) {
             log.warn(Constants.NOT_FOUND);
             return false;
         }
-        return write(Constants.METHOD_NAME_DELETE, oldBook, id);
+
+        List<T> list = getAll(type);
+        list.removeIf(e -> ReflectUtil.getId(e) == id);
+        return write(Constants.METHOD_NAME_DELETE, ReflectUtil.getEmptyObject(type), id);
     }
 
     @Override
-    public boolean updateBook(Book book) {
-        long id = book.getId();
-        Book oldBook = getBook(id);
-        if (oldBook.getId() == 0) {
+    protected <T> boolean update(Class<T> type, T bean) {
+        long id = ReflectUtil.getId(bean);
+        if (!hasSavedId(type, id)) {
             log.warn(Constants.NOT_FOUND);
             return false;
         }
-        return write(Constants.METHOD_NAME_UPDATE, book, id);
-    }
 
-    @Override
-    public List<PerpetualCard> getPerpetualCards() {
-        return null;
-    }
-
-    @Override
-    public PerpetualCard getPerpetualCard(long id) {
-        return null;
-    }
-
-    @Override
-    public long insertPerpetualCard(PerpetualCard perpetualCard) {
-        return 0;
-    }
-
-    @Override
-    public boolean deletePerpetualCard(long id) {
-        return false;
-    }
-
-    @Override
-    public boolean updatePerpetualCard(PerpetualCard perpetualCard) {
-        return false;
-    }
-
-    @Override
-    public List<TemporaryCard> getTemporaryCards() {
-        return null;
-    }
-
-    @Override
-    public TemporaryCard getTemporaryCard(long id) {
-        return null;
-    }
-
-    @Override
-    public long insertTemporaryCard(TemporaryCard temporaryCard) {
-        return 0;
-    }
-
-    @Override
-    public boolean deleteTemporaryCard(long id) {
-        return false;
-    }
-
-    @Override
-    public boolean updateTemporaryCard(TemporaryCard temporaryCard) {
-        return false;
-    }
-
-    @Override
-    public List<Rent> getRents() {
-        return null;
-    }
-
-    @Override
-    public Rent getRent(long id) {
-        return null;
-    }
-
-    @Override
-    public long insertRent(Rent rent) {
-        return 0;
-    }
-
-    @Override
-    public boolean deleteRent(long id) {
-        return false;
-    }
-
-    @Override
-    public boolean updateRent(Rent rent) {
-        return false;
+        List<T> list = getAll(type);
+        list.set(list.indexOf(getById(type, id)), bean);
+        return write(Constants.METHOD_NAME_UPDATE, bean, id);
     }
 }
