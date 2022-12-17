@@ -30,13 +30,13 @@ public class Constants {
     public static final String METHOD_NAME_DELETE = "Delete";
     public static final String METHOD_NAME_UPDATE = "Update";
 
-    // Info
-    public static final String NOT_FOUND = "Record with this ID not found";
-
     // CLI
     public static final String XML = "XML";
     public static final String JDBC = "JDBC";
     public static final String CSV = "CSV";
+
+    // Info
+    public static final String NOT_FOUND = "Record with this ID not found";
 
     public static final String FEW_ARGS = "Few arguments";
     public static final String WRONG_DP = "Wrong type of DataProvider";
