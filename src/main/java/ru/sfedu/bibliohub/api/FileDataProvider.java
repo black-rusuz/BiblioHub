@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 abstract public class FileDataProvider extends AbstractDataProvider {
     protected String fileNamePattern;
 
@@ -57,7 +58,7 @@ abstract public class FileDataProvider extends AbstractDataProvider {
     @Override
     protected <T> boolean delete(Class<T> type, long id) {
         if (!hasSavedId(type, id)) {
-            log.warn(Constants.NOT_FOUND);
+            log.warn(getNotFoundMessage(type, id));
             return false;
         }
 
@@ -70,7 +71,7 @@ abstract public class FileDataProvider extends AbstractDataProvider {
     protected <T> boolean update(Class<T> type, T bean) {
         long id = ReflectUtil.getId(bean);
         if (!hasSavedId(type, id)) {
-            log.warn(Constants.NOT_FOUND);
+            log.warn(getNotFoundMessage(type, id));
             return false;
         }
 

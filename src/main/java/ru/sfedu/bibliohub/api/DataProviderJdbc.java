@@ -1,9 +1,6 @@
 package ru.sfedu.bibliohub.api;
 
 import ru.sfedu.bibliohub.model.bean.Book;
-import ru.sfedu.bibliohub.model.bean.PerpetualCard;
-import ru.sfedu.bibliohub.model.bean.Rent;
-import ru.sfedu.bibliohub.model.bean.TemporaryCard;
 import ru.sfedu.bibliohub.utils.ConfigurationUtil;
 import ru.sfedu.bibliohub.utils.Constants;
 import ru.sfedu.bibliohub.utils.JdbcUtil;
@@ -14,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public  class DataProviderJdbc extends AbstractDataProvider {
+public class DataProviderJdbc extends AbstractDataProvider {
     private String hostname;
     private String username;
     private String password;
@@ -99,7 +96,7 @@ public  class DataProviderJdbc extends AbstractDataProvider {
     // GENERICS
 
     @Override
-    protected  <T> List<T> getAll(Class<T> type) {
+    protected <T> List<T> getAll(Class<T> type) {
         return read(type);
     }
 
@@ -115,23 +112,16 @@ public  class DataProviderJdbc extends AbstractDataProvider {
         if (hasSavedId(type, id)) {
             ReflectUtil.setId(bean, System.currentTimeMillis());
         }
-
-        List<T> list = getAll(type);
-        list.add(bean);
         write(Constants.METHOD_NAME_APPEND, bean, id);
-
         return ReflectUtil.getId(bean);
     }
 
     @Override
     protected <T> boolean delete(Class<T> type, long id) {
         if (!hasSavedId(type, id)) {
-            log.warn(Constants.NOT_FOUND);
+            log.warn(getNotFoundMessage(type, id));
             return false;
         }
-
-        List<T> list = getAll(type);
-        list.removeIf(e -> ReflectUtil.getId(e) == id);
         return write(Constants.METHOD_NAME_DELETE, ReflectUtil.getEmptyObject(type), id);
     }
 
@@ -139,12 +129,9 @@ public  class DataProviderJdbc extends AbstractDataProvider {
     protected <T> boolean update(Class<T> type, T bean) {
         long id = ReflectUtil.getId(bean);
         if (!hasSavedId(type, id)) {
-            log.warn(Constants.NOT_FOUND);
+            log.warn(getNotFoundMessage(type, id));
             return false;
         }
-
-        List<T> list = getAll(type);
-        list.set(list.indexOf(getById(type, id)), bean);
         return write(Constants.METHOD_NAME_UPDATE, bean, id);
     }
 }

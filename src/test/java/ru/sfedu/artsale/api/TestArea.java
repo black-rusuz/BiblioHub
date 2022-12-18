@@ -4,15 +4,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import ru.sfedu.bibliohub.api.AbstractDataProvider;
-import ru.sfedu.bibliohub.api.DataProviderCsv;
 import ru.sfedu.bibliohub.api.DataProviderJdbc;
 import ru.sfedu.bibliohub.model.bean.Book;
 import ru.sfedu.bibliohub.model.bean.PerpetualCard;
 import ru.sfedu.bibliohub.model.bean.Rent;
 import ru.sfedu.bibliohub.model.bean.TemporaryCard;
+import ru.sfedu.bibliohub.utils.TestData;
 
 
-public class TestArea {
+public class TestArea extends TestData {
     protected final Logger log = LogManager.getLogger(TestArea.class);
     protected final AbstractDataProvider dp = new DataProviderJdbc();
 
@@ -31,10 +31,10 @@ public class TestArea {
         log.info(bbb);
 
         bb.setAuthor("aASDasdasdasdasdasd");
-        boolean u = dp.updateBook(bb);
+        dp.updateBook(bb);
         log.info(dp.getBooks());
 
-        boolean d = dp.deleteBook(bb.getId());
+        dp.deleteBook(bb.getId());
         log.info(dp.getBooks());
     }
 
@@ -53,10 +53,10 @@ public class TestArea {
         log.info(card3);
 
         card2.setWork("Rubium");
-        boolean u = dp.updatePerpetualCard(card2);
+        dp.updatePerpetualCard(card2);
         log.info(dp.getPerpetualCards());
 
-        boolean d = dp.deletePerpetualCard(card2.getId());
+        dp.deletePerpetualCard(card2.getId());
         log.info(dp.getPerpetualCards());
     }
 
@@ -75,10 +75,10 @@ public class TestArea {
         log.info(card3);
 
         card2.setWork("Rubium");
-        boolean u = dp.updateTemporaryCard(card2);
+        dp.updateTemporaryCard(card2);
         log.info(dp.getTemporaryCards());
 
-        boolean d = dp.deleteTemporaryCard(card2.getId());
+        dp.deleteTemporaryCard(card2.getId());
         log.info(dp.getTemporaryCards());
     }
 
@@ -99,10 +99,10 @@ public class TestArea {
         log.info(rent3);
 
         rent2.setReturnDate("16.02.2023");
-        boolean u = dp.updateRent(rent2);
+        dp.updateRent(rent2);
         log.info(dp.getRents());
 
-        boolean d = dp.deleteRent(rent2.getId());
+        dp.deleteRent(rent2.getId());
         log.info(dp.getRents());
     }
 }

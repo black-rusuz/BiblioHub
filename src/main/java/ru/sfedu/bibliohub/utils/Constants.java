@@ -36,7 +36,11 @@ public class Constants {
     public static final String CSV = "CSV";
 
     // Info
-    public static final String NOT_FOUND = "Record with this ID not found";
+    public static final String NOT_FOUND = "%s ID %d not found";
+    public static final String DATE_FORMAT = "%d.%d.%d";
+    public static final String NEW_RENT = "Created rent:\n";
+    public static final String CARD_EXPIRED = "Card is expired";
+    public static final String CARD_NOT_EXPIRED = "Card is not expired";
 
     public static final String FEW_ARGS = "Few arguments";
     public static final String WRONG_DP = "Wrong type of DataProvider";
