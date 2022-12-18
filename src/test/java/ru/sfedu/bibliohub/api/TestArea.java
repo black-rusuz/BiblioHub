@@ -1,10 +1,8 @@
-package ru.sfedu.artsale.api;
+package ru.sfedu.bibliohub.api;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
-import ru.sfedu.bibliohub.api.AbstractDataProvider;
-import ru.sfedu.bibliohub.api.DataProviderJdbc;
 import ru.sfedu.bibliohub.model.bean.Book;
 import ru.sfedu.bibliohub.model.bean.PerpetualCard;
 import ru.sfedu.bibliohub.model.bean.Rent;
@@ -20,7 +18,7 @@ public class TestArea extends TestData {
     void books() {
         log.info(dp.getBooks());
 
-        Book b = new Book(123, "qwe", "asd", 1);
+        Book b = b1;
         dp.insertBook(b);
         log.info(dp.getBooks());
 
@@ -30,7 +28,7 @@ public class TestArea extends TestData {
         Book bbb = dp.getBook(321);
         log.info(bbb);
 
-        bb.setAuthor("aASDasdasdasdasdasd");
+        bb.setAuthor("John Doe");
         dp.updateBook(bb);
         log.info(dp.getBooks());
 
@@ -42,7 +40,7 @@ public class TestArea extends TestData {
     void pCards() {
         log.info(dp.getPerpetualCards());
 
-        PerpetualCard card = new PerpetualCard(12, "Same", "Person", "20.02.2014", "Work", "Good Boy");
+        PerpetualCard card = p1;
         dp.insertPerpetualCard(card);
         log.info(dp.getPerpetualCards());
 
@@ -52,7 +50,7 @@ public class TestArea extends TestData {
         PerpetualCard card3 = dp.getPerpetualCard(321);
         log.info(card3);
 
-        card2.setWork("Rubium");
+        card2.setWork("Amazon");
         dp.updatePerpetualCard(card2);
         log.info(dp.getPerpetualCards());
 
@@ -64,7 +62,7 @@ public class TestArea extends TestData {
     void tCards() {
         log.info(dp.getTemporaryCards());
 
-        TemporaryCard card = new TemporaryCard(12, "Same", "Person", "20.02.2014", "Work", "15.12.2022", "15.01.2023");
+        TemporaryCard card = t1;
         dp.insertTemporaryCard(card);
         log.info(dp.getTemporaryCards());
 
@@ -74,7 +72,7 @@ public class TestArea extends TestData {
         TemporaryCard card3 = dp.getTemporaryCard(321);
         log.info(card3);
 
-        card2.setWork("Rubium");
+        card2.setWork("Facebook");
         dp.updateTemporaryCard(card2);
         log.info(dp.getTemporaryCards());
 
@@ -86,9 +84,7 @@ public class TestArea extends TestData {
     void rents() {
         log.info(dp.getRents());
 
-        Book b = new Book(123, "qwe", "asd", 1);
-        PerpetualCard card = new PerpetualCard(12, "Same", "Person", "20.02.2014", "Work", "Good Boy");
-        Rent rent = new Rent(1245, b, card, "16.12.2022", "16.01.2023");
+        Rent rent = new Rent(1245, b1, p1, "16.12.2022", "16.01.2023");
         dp.insertRent(rent);
         log.info(dp.getRents());
 

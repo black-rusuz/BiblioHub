@@ -10,7 +10,6 @@ import ru.sfedu.bibliohub.utils.converters.LibraryCardConverter;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Element
 public class Rent implements Serializable {
     @Attribute
     @CsvBindByPosition(position = 0)

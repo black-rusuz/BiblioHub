@@ -143,14 +143,14 @@ public class JdbcUtil {
 
     public static <T> List<T> readData(Class<T> type, ResultSet resultSet) throws SQLException {
         List list = new ArrayList<>();
-        if (type == Book.class) list = readBooks(resultSet);
+        if (type == Book.class) list = readBook(resultSet);
         if (type == PerpetualCard.class) list = readPerpetualCard(resultSet);
         if (type == TemporaryCard.class) list = readTemporaryCard(resultSet);
-        if (type == Rent.class) list = readRents(resultSet);
+        if (type == Rent.class) list = readRent(resultSet);
         return list;
     }
 
-    private static List<Book> readBooks(ResultSet resultSet) throws SQLException {
+    private static List<Book> readBook(ResultSet resultSet) throws SQLException {
         List<Book> list = new ArrayList<>();
         while (resultSet.next()) {
             Book bean = new Book();
@@ -194,7 +194,7 @@ public class JdbcUtil {
         return list;
     }
 
-    private static List<Rent> readRents(ResultSet resultSet) throws SQLException {
+    private static List<Rent> readRent(ResultSet resultSet) throws SQLException {
         List<Rent> list = new ArrayList<>();
         while (resultSet.next()) {
             Rent bean = new Rent();

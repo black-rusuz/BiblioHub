@@ -42,6 +42,9 @@ public class Constants {
     public static final String NEW_RENT = "Created rent:\n";
     public static final String CARD_EXPIRED = "Card is expired";
     public static final String CARD_NOT_EXPIRED = "Card is not expired";
+    public static final String EXPIRING_RENTS = "Expiring rents:\n";
+    public static final String EXPIRING_CARDS = "Expiring cards:\n";
+    public static final String EXPIRED_PERIOD = "Expired period:\n";
 
     public static final String FEW_ARGS = "Few arguments";
     public static final String WRONG_DP = "Wrong type of DataProvider";

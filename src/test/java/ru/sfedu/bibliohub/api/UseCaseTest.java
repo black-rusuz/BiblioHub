@@ -1,10 +1,8 @@
-package ru.sfedu.artsale.api;
+package ru.sfedu.bibliohub.api;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.sfedu.bibliohub.api.AbstractDataProvider;
-import ru.sfedu.bibliohub.api.DataProviderXml;
 import ru.sfedu.bibliohub.utils.TestData;
 
 public class UseCaseTest extends TestData {
@@ -13,6 +11,8 @@ public class UseCaseTest extends TestData {
     @Test
     void test() {
         dp.giveBook(b1.getId(), t1.getId());
+        dp.watchExpiringRents(r1.getId());
+        dp.watchExpiringCards(0);
     }
 
     @BeforeEach

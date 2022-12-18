@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("UnusedReturnValue")
 public abstract class AbstractDataProvider {
@@ -45,7 +46,13 @@ public abstract class AbstractDataProvider {
     // SERVICE
 
     protected void sendLogs(String methodName, Object bean, boolean result) {
-        HistoryContent historyContent = new HistoryContent(UUID.randomUUID(), this.getClass().getSimpleName(), LocalDateTime.now().toString(), MONGO_ACTOR, methodName, MongoUtil.objectToString(bean), result);
+        HistoryContent historyContent = new HistoryContent(UUID.randomUUID(),
+                this.getClass().getSimpleName(),
+                LocalDateTime.now().toString(),
+                MONGO_ACTOR,
+                methodName,
+                MongoUtil.objectToString(bean),
+                result);
         if (MONGO_ENABLE) MongoUtil.saveToLog(historyContent);
     }
 
@@ -133,6 +140,8 @@ public abstract class AbstractDataProvider {
     public List<Rent> watchExpiringRents(long rentId) {
         List<Rent> rents = getRents();
         rents = rents.stream().filter((e) -> dateFilter(e.getReturnDate())).toList();
+        log.info(Constants.EXPIRING_RENTS
+                + rents.stream().map(Object::toString).collect(Collectors.joining("\n")));
         if (rentId != 0) expireRentPeriod(rentId);
         return rents;
     }
@@ -142,12 +151,15 @@ public abstract class AbstractDataProvider {
         LocalDate returnDate = dateFromString(rent.getReturnDate()).plusDays(7);
         rent.setReturnDate(formatDate(returnDate));
         updateRent(rent);
+        log.info(Constants.EXPIRED_PERIOD + rent);
         return Optional.of(rent);
     }
 
     public List<TemporaryCard> watchExpiringCards(long cardId) {
         List<TemporaryCard> cards = getTemporaryCards();
         cards = cards.stream().filter((e) -> dateFilter(e.getEndDate())).toList();
+        log.info(Constants.EXPIRING_CARDS
+                + cards.stream().map(Object::toString).collect(Collectors.joining("\n")));
         if (cardId != 0) expireCardPeriod(cardId);
         return cards;
     }
@@ -157,6 +169,7 @@ public abstract class AbstractDataProvider {
         LocalDate endDate = dateFromString(card.getEndDate()).plusDays(7);
         card.setEndDate(formatDate(endDate));
         updateTemporaryCard(card);
+        log.info(Constants.EXPIRED_PERIOD + card);
         return Optional.of(card);
     }
 

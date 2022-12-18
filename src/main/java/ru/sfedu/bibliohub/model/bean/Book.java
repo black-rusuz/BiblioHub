@@ -2,12 +2,10 @@ package ru.sfedu.bibliohub.model.bean;
 
 import com.opencsv.bean.CsvBindByPosition;
 import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-@Element
 public class Book implements Serializable {
     @Attribute
     @CsvBindByPosition(position = 0)
