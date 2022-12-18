@@ -24,6 +24,7 @@ public class Constants {
     public static final String SET_ID = "setId";
     public static final String XML_PATTERN = "%s.xml";
     public static final String CSV_PATTERN = "%s.csv";
+    public static final String FIELDS_DELIMITER = "::";
 
     // CRUD
     public static final String METHOD_NAME_APPEND = "Append";

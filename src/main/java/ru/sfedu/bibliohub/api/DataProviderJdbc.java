@@ -1,6 +1,9 @@
 package ru.sfedu.bibliohub.api;
 
 import ru.sfedu.bibliohub.model.bean.Book;
+import ru.sfedu.bibliohub.model.bean.PerpetualCard;
+import ru.sfedu.bibliohub.model.bean.Rent;
+import ru.sfedu.bibliohub.model.bean.TemporaryCard;
 import ru.sfedu.bibliohub.utils.ConfigurationUtil;
 import ru.sfedu.bibliohub.utils.Constants;
 import ru.sfedu.bibliohub.utils.JdbcUtil;
@@ -27,6 +30,9 @@ public class DataProviderJdbc extends AbstractDataProvider {
 
         try {
             write(JdbcUtil.createTable(new Book()));
+            write(JdbcUtil.createTable(new PerpetualCard()));
+            write(JdbcUtil.createTable(new TemporaryCard()));
+            write(JdbcUtil.createTable(new Rent()));
         } catch (SQLException e) {
             log.error(e.getMessage());
         }

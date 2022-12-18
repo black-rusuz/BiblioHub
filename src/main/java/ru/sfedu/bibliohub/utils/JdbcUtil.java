@@ -2,6 +2,11 @@ package ru.sfedu.bibliohub.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.sfedu.bibliohub.model.bean.Book;
+import ru.sfedu.bibliohub.model.bean.PerpetualCard;
+import ru.sfedu.bibliohub.model.bean.Rent;
+import ru.sfedu.bibliohub.model.bean.TemporaryCard;
+import ru.sfedu.bibliohub.utils.converters.BookConverter;
+import ru.sfedu.bibliohub.utils.converters.LibraryCardConverter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -105,17 +110,25 @@ public class JdbcUtil {
     private static final String SQL_VALUE_WRAPPER = "'%s'";
     private static final String SQL_KEY_VALUE_WRAPPER = "%s = '%s'";
 
-    private static String toValues(String value) {
-        return String.format(SQL_VALUE_WRAPPER, value);
+    private static String innerMapToString(LinkedHashMap<String, Object> map) {
+        return map.values().stream().map(Object::toString).collect(Collectors.joining(Constants.FIELDS_DELIMITER));
+    }
+
+    private static String toValues(Object value) {
+        String valueString = value.toString();
+        if (value instanceof LinkedHashMap valueMap) valueString = innerMapToString(valueMap);
+        return String.format(SQL_VALUE_WRAPPER, valueString);
     }
 
     private static String toKeyValues(Map.Entry<String, Object> entry) {
-        return String.format(SQL_KEY_VALUE_WRAPPER, getColumnName(entry.getKey()), entry.getValue());
+        Object value = entry.getValue();
+        String valueString = value.toString();
+        if (value instanceof LinkedHashMap valueMap) valueString = innerMapToString(valueMap);
+        return String.format(SQL_KEY_VALUE_WRAPPER, getColumnName(entry.getKey()), valueString);
     }
 
     private static String mapToValues(LinkedHashMap<String, Object> map) {
         return map.values().stream()
-                .map(Object::toString)
                 .map(JdbcUtil::toValues)
                 .collect(Collectors.joining(SQL_COMMA));
     }
@@ -131,18 +144,66 @@ public class JdbcUtil {
     public static <T> List<T> readData(Class<T> type, ResultSet resultSet) throws SQLException {
         List list = new ArrayList<>();
         if (type == Book.class) list = readBooks(resultSet);
+        if (type == PerpetualCard.class) list = readPerpetualCard(resultSet);
+        if (type == TemporaryCard.class) list = readTemporaryCard(resultSet);
+        if (type == Rent.class) list = readRents(resultSet);
         return list;
     }
 
     private static List<Book> readBooks(ResultSet resultSet) throws SQLException {
         List<Book> list = new ArrayList<>();
         while (resultSet.next()) {
-            Book balance = new Book();
-            balance.setId(resultSet.getLong(1));
-            balance.setAuthor(resultSet.getString(2));
-            balance.setTitle(resultSet.getString(3));
-            balance.setYear(resultSet.getInt(4));
-            list.add(balance);
+            Book bean = new Book();
+            bean.setId(resultSet.getLong(1));
+            bean.setAuthor(resultSet.getString(2));
+            bean.setTitle(resultSet.getString(3));
+            bean.setYear(resultSet.getInt(4));
+            list.add(bean);
+        }
+        return list;
+    }
+
+    private static List<PerpetualCard> readPerpetualCard(ResultSet resultSet) throws SQLException {
+        List<PerpetualCard> list = new ArrayList<>();
+        while (resultSet.next()) {
+            PerpetualCard bean = new PerpetualCard();
+            bean.setId(resultSet.getLong(1));
+            bean.setFirstName(resultSet.getString(2));
+            bean.setLastName(resultSet.getString(3));
+            bean.setBirthDate(resultSet.getString(4));
+            bean.setWork(resultSet.getString(5));
+            bean.setReason(resultSet.getString(6));
+            list.add(bean);
+        }
+        return list;
+    }
+
+    private static List<TemporaryCard> readTemporaryCard(ResultSet resultSet) throws SQLException {
+        List<TemporaryCard> list = new ArrayList<>();
+        while (resultSet.next()) {
+            TemporaryCard bean = new TemporaryCard();
+            bean.setId(resultSet.getLong(1));
+            bean.setFirstName(resultSet.getString(2));
+            bean.setLastName(resultSet.getString(3));
+            bean.setBirthDate(resultSet.getString(4));
+            bean.setWork(resultSet.getString(5));
+            bean.setStartDate(resultSet.getString(6));
+            bean.setEndDate(resultSet.getString(7));
+            list.add(bean);
+        }
+        return list;
+    }
+
+    private static List<Rent> readRents(ResultSet resultSet) throws SQLException {
+        List<Rent> list = new ArrayList<>();
+        while (resultSet.next()) {
+            Rent bean = new Rent();
+            bean.setId(resultSet.getLong(1));
+            bean.setBook(BookConverter.fromString(resultSet.getString(2)));
+            bean.setCard(LibraryCardConverter.fromString(resultSet.getString(3)));
+            bean.setRentDate(resultSet.getString(4));
+            bean.setReturnDate(resultSet.getString(5));
+            list.add(bean);
         }
         return list;
     }

@@ -2,12 +2,13 @@ package ru.sfedu.bibliohub.utils.converters;
 
 import com.opencsv.bean.AbstractBeanField;
 import ru.sfedu.bibliohub.model.bean.Book;
+import ru.sfedu.bibliohub.utils.Constants;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class BookConverter extends AbstractBeanField<Book, String> {
-    public static final String fieldsDelimiter = "::";
+    private static final String fieldsDelimiter = Constants.FIELDS_DELIMITER;
 
     public static Book fromString(String string) {
         String[] parsed = string.split(fieldsDelimiter);

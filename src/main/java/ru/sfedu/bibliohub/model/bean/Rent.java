@@ -27,11 +27,11 @@ public class Rent implements Serializable {
 
     @Attribute
     @CsvBindByPosition(position = 3)
-    private String rentDate;
+    private String rentDate = "";
 
     @Attribute
     @CsvBindByPosition(position = 4)
-    private String returnDate;
+    private String returnDate = "";
 
     public Rent() {
     }
