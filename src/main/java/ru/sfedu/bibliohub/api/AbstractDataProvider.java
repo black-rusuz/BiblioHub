@@ -123,20 +123,41 @@ public abstract class AbstractDataProvider {
         return Optional.of(returnDate);
     }
 
-    public List<Rent> watchExpiringRents(int daysRemaining) {
-        return new ArrayList<>();
+    private boolean dateFilter(String rentDate) {
+        LocalDate today = LocalDate.now();
+        LocalDate expireDate = today.plusDays(7);
+        LocalDate date = dateFromString(rentDate);
+        return date.isAfter(today) && date.isBefore(expireDate);
+    }
+
+    public List<Rent> watchExpiringRents(long rentId) {
+        List<Rent> rents = getRents();
+        rents = rents.stream().filter((e) -> dateFilter(e.getReturnDate())).toList();
+        if (rentId != 0) expireRentPeriod(rentId);
+        return rents;
     }
 
     public Optional<Rent> expireRentPeriod(long rentId) {
-        return Optional.empty();
+        Rent rent = getRent(rentId);
+        LocalDate returnDate = dateFromString(rent.getReturnDate()).plusDays(7);
+        rent.setReturnDate(formatDate(returnDate));
+        updateRent(rent);
+        return Optional.of(rent);
     }
 
-    public List<LibraryCard> watchExpiringCards(int daysRemaining) {
-        return new ArrayList<>();
+    public List<TemporaryCard> watchExpiringCards(long cardId) {
+        List<TemporaryCard> cards = getTemporaryCards();
+        cards = cards.stream().filter((e) -> dateFilter(e.getEndDate())).toList();
+        if (cardId != 0) expireCardPeriod(cardId);
+        return cards;
     }
 
     public Optional<LibraryCard> expireCardPeriod(long cardId) {
-        return Optional.empty();
+        TemporaryCard card = getTemporaryCard(cardId);
+        LocalDate endDate = dateFromString(card.getEndDate()).plusDays(7);
+        card.setEndDate(formatDate(endDate));
+        updateTemporaryCard(card);
+        return Optional.of(card);
     }
 
     // CRUD
