@@ -21,8 +21,7 @@ public class Rent implements Serializable {
 
     @Element
     @CsvCustomBindByPosition(position = 2, converter = LibraryCardConverter.class)
-    private LibraryCard card = new LibraryCard() {
-    };
+    private LibraryCard card = new LibraryCard() {};
 
     @Attribute
     @CsvBindByPosition(position = 3)

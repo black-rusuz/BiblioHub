@@ -72,6 +72,7 @@ public abstract class AbstractDataProvider {
     }
 
     private LocalDate dateFromString(String date) {
+        if (date.length() == 0) return LocalDate.MIN;
         List<Integer> numbers = Arrays.stream(date.split("\\.")).map(Integer::parseInt).toList();
         return LocalDate.of(numbers.get(2), numbers.get(1), numbers.get(0));
     }

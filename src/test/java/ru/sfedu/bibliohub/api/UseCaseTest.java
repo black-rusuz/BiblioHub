@@ -1,19 +1,80 @@
 package ru.sfedu.bibliohub.api;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.sfedu.bibliohub.utils.TestData;
 
-public class UseCaseTest extends TestData {
-    AbstractDataProvider dp = new DataProviderXml();
+import java.time.LocalDate;
+import java.util.Optional;
+
+public abstract class UseCaseTest extends TestData {
+    AbstractDataProvider dp;
 
     @Test
     void test() {
         dp.giveBook(b1.getId(), t1.getId());
+        dp.validateCard(t1.getId());
+        dp.calculateReturnDate(2022, 12, 01);
+
         dp.watchExpiringRents(r1.getId());
-        dp.watchExpiringCards(0);
+        dp.expireRentPeriod(r1.getId());
+
+        dp.watchExpiringCards(t1.getId());
+        dp.expireCardPeriod(t1.getId());
     }
+
+
+    @Test
+    void validateCardPos() {
+        Assertions.assertTrue(dp.validateCard(t1.getId()));
+    }
+
+    @Test
+    void validateCardNeg() {
+        Assertions.assertFalse(dp.validateCard(123));
+    }
+
+
+    @Test
+    void calculateReturnDatePos() {
+        Optional<LocalDate> expectedDate = Optional.of(LocalDate.of(2022, 12, 15));
+        Optional<LocalDate> actualDate = dp.calculateReturnDate(2022, 12, 1);
+        Assertions.assertEquals(expectedDate, actualDate);
+    }
+
+    @Test
+    void calculateReturnDateNeg() {
+        Optional<LocalDate> expectedDate = Optional.of(LocalDate.now());
+        Optional<LocalDate> actualDate = dp.calculateReturnDate(2022, 12, 1);
+        Assertions.assertNotEquals(expectedDate, actualDate);
+    }
+
+
+    @Test
+    void expireRentPeriodPos() {
+        r1.setReturnDate("21.1.2023");
+        Assertions.assertEquals(Optional.of(r1), dp.expireRentPeriod(r1.getId()));
+    }
+
+    @Test
+    void expireRentPeriodNeg() {
+        Assertions.assertNotEquals(Optional.of(r1), dp.expireRentPeriod(r1.getId()));
+    }
+
+
+    @Test
+    void expireCardPeriodPos() {
+        t1.setEndDate("22.1.2023");
+        Assertions.assertEquals(Optional.of(t1), dp.expireCardPeriod(t1.getId()));
+    }
+
+    @Test
+    void expireCardPeriodNeg() {
+        Assertions.assertNotEquals(Optional.of(t1), dp.expireCardPeriod(t1.getId()));
+    }
+
 
     @BeforeEach
     void setUp() {
