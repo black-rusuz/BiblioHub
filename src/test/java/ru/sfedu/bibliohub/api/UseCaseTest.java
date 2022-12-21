@@ -14,15 +14,6 @@ public abstract class UseCaseTest extends TestData {
 
     @Test
     void test() {
-        dp.giveBook(b1.getId(), t1.getId());
-        dp.validateCard(t1.getId());
-        dp.calculateReturnDate(2022, 12, 01);
-
-        dp.watchExpiringRents(r1.getId());
-        dp.expireRentPeriod(r1.getId());
-
-        dp.watchExpiringCards(t1.getId());
-        dp.expireCardPeriod(t1.getId());
     }
 
 

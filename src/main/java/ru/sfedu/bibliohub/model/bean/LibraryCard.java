@@ -16,15 +16,15 @@ public abstract class LibraryCard implements Serializable {
     private String firstName = "";
 
     @Attribute
-    @CsvBindByPosition(position = 1)
+    @CsvBindByPosition(position = 2)
     private String lastName = "";
 
     @Attribute
-    @CsvBindByPosition(position = 1)
+    @CsvBindByPosition(position = 3)
     private String birthDate = "";
 
     @Attribute
-    @CsvBindByPosition(position = 1)
+    @CsvBindByPosition(position = 4)
     private String work = "";
 
     public LibraryCard() {

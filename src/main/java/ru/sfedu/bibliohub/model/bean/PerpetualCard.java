@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class PerpetualCard extends LibraryCard {
     @Attribute
-    @CsvBindByPosition(position = 2)
+    @CsvBindByPosition(position = 5)
     private String reason = "";
 
     public PerpetualCard() {
