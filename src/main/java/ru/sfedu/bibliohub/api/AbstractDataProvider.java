@@ -70,47 +70,75 @@ public abstract class AbstractDataProvider {
 
     // USE CASES
 
+    /**
+     * Формат даты
+     * @param date Дата
+     * @return Строка формата "дд.мм.гггг"
+     */
     String formatDate(LocalDate date) {
         return String.format(Constants.DATE_FORMAT, date.getDayOfMonth(), date.getMonthValue(), date.getYear());
     }
 
+    /**
+     * Получить LocalDate из форматированной строки
+     * @param date Строка формата "дд.мм.гггг"
+     * @return Дата
+     */
     private LocalDate dateFromString(String date) {
         if (date.length() == 0) return LocalDate.MIN;
         List<Integer> numbers = Arrays.stream(date.split("\\.")).map(Integer::parseInt).toList();
         return LocalDate.of(numbers.get(2), numbers.get(1), numbers.get(0));
     }
 
-    public Optional<Rent> giveBook(long bookId, long cardId) {
-        Book book = getBook(bookId);
-        PerpetualCard pCard = getPerpetualCard(cardId);
-        TemporaryCard tCard = getTemporaryCard(cardId);
+    private Optional<LibraryCard> getCard(long id) {
+        LibraryCard card = getPerpetualCard(id);
+        if (card.getId() != 0) return Optional.of(card);
+        card = getTemporaryCard(id);
+        if (card.getId() != 0) return Optional.of(card);
+        log.info(getNotFoundMessage(LibraryCard.class, id));
+        return Optional.empty();
+    }
 
+    /**
+     * Выдача книги читателю
+     * @param bookId ID книги
+     * @param cardId ID читательского билета
+     * @return Запись об аренде книги
+     */
+    public Optional<Rent> giveBook(long bookId, long cardId) {
+        if (!validateCard(cardId)) {
+            return Optional.empty();
+        }
+
+        Book book = getBook(bookId);
         if (book.getId() == 0) {
             log.warn(getNotFoundMessage(Book.class, bookId));
             return Optional.empty();
         }
 
-        if (!validateCard(cardId)) {
-            return Optional.empty();
-        }
-        if (pCard.getId() == 0 && tCard.getId() == 0) {
+        Optional<LibraryCard> optionalCard = getCard(cardId);
+        if (optionalCard.isEmpty()) {
             log.warn(getNotFoundMessage(LibraryCard.class, cardId));
             return Optional.empty();
         }
-        LibraryCard card = pCard.getId() != 0 ? pCard : tCard;
 
         LocalDate today = LocalDate.now();
         String todayString = formatDate(today);
         LocalDate ret = calculateReturnDate(today.getYear(), today.getMonthValue(), today.getDayOfMonth()).get();
         String retString = formatDate(ret);
 
-        Rent rent = new Rent(System.currentTimeMillis(), book, card, todayString, retString);
+        Rent rent = new Rent(System.currentTimeMillis(), book, optionalCard.get(), todayString, retString);
         log.info(Constants.NEW_RENT + rent);
 
         insertRent(rent);
         return Optional.of(rent);
     }
 
+    /**
+     * Проверка актуальности читательского билета
+     * @param cardId ID билета
+     * @return true если билет актуален
+     */
     public boolean validateCard(long cardId) {
         PerpetualCard pCard = getPerpetualCard(cardId);
         if (pCard.getId() != 0) return true;
@@ -128,12 +156,24 @@ public abstract class AbstractDataProvider {
         }
     }
 
+    /**
+     * Расчёт даты возврата книги
+     * @param startYear Текущий год
+     * @param startMonth Текущий месяц
+     * @param startDay Текущий день
+     * @return Дата возврата книги
+     */
     public Optional<LocalDate> calculateReturnDate(int startYear, int startMonth, int startDay) {
         LocalDate startDate = LocalDate.of(startYear, startMonth, startDay);
         LocalDate returnDate = startDate.plusDays(14);
         return Optional.of(returnDate);
     }
 
+    /**
+     * Проверить входит ли дата в диапазон от текущего момента до следующих двух недель
+     * @param rentDate дата для проверки
+     * @return true если осталось более 2 недель до наступления даты
+     */
     boolean dateFilter(String rentDate) {
         LocalDate today = LocalDate.now();
         LocalDate expireDate = today.plusWeeks(2);
@@ -141,6 +181,11 @@ public abstract class AbstractDataProvider {
         return date.isAfter(today) && date.isBefore(expireDate);
     }
 
+    /**
+     * Просмотр записей об аренды со сроком возврата менее 2 недель
+     * @param rentId ID аренды
+     * @return Список записей
+     */
     public List<Rent> watchExpiringRents(long rentId) {
         List<Rent> rents = getRents();
         rents = rents.stream().filter((e) -> dateFilter(e.getReturnDate())).toList();
@@ -150,6 +195,11 @@ public abstract class AbstractDataProvider {
         return rents;
     }
 
+    /**
+     * Продлить срок аренды книги
+     * @param rentId ID аренды
+     * @return Обновлённая запись об аренде
+     */
     public Optional<Rent> expireRentPeriod(long rentId) {
         Rent rent = getRent(rentId);
         if (rent.getId() != 0) {
@@ -164,6 +214,11 @@ public abstract class AbstractDataProvider {
         }
     }
 
+    /**
+     * Просмотр временных читательских билетов с оставшимся сроком действия менее 2 недель
+     * @param cardId ID билета
+     * @return Список записей
+     */
     public List<TemporaryCard> watchExpiringCards(long cardId) {
         List<TemporaryCard> cards = getTemporaryCards();
         cards = cards.stream().filter((e) -> dateFilter(e.getEndDate())).toList();
@@ -173,6 +228,11 @@ public abstract class AbstractDataProvider {
         return cards;
     }
 
+    /**
+     * Продлить срок действия временной билета
+     * @param cardId ID аренды
+     * @return Обновлённый билет
+     */
     public Optional<LibraryCard> expireCardPeriod(long cardId) {
         TemporaryCard card = getTemporaryCard(cardId);
         if (card.getId() != 0) {
