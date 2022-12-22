@@ -12,7 +12,10 @@ import ru.sfedu.bibliohub.utils.ReflectUtil;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("UnusedReturnValue")
@@ -67,7 +70,7 @@ public abstract class AbstractDataProvider {
 
     // USE CASES
 
-    private String formatDate(LocalDate date) {
+    String formatDate(LocalDate date) {
         return String.format(Constants.DATE_FORMAT, date.getDayOfMonth(), date.getMonthValue(), date.getYear());
     }
 
@@ -131,9 +134,9 @@ public abstract class AbstractDataProvider {
         return Optional.of(returnDate);
     }
 
-    private boolean dateFilter(String rentDate) {
+    boolean dateFilter(String rentDate) {
         LocalDate today = LocalDate.now();
-        LocalDate expireDate = today.plusDays(7);
+        LocalDate expireDate = today.plusWeeks(2);
         LocalDate date = dateFromString(rentDate);
         return date.isAfter(today) && date.isBefore(expireDate);
     }
@@ -149,11 +152,16 @@ public abstract class AbstractDataProvider {
 
     public Optional<Rent> expireRentPeriod(long rentId) {
         Rent rent = getRent(rentId);
-        LocalDate returnDate = dateFromString(rent.getReturnDate()).plusDays(7);
-        rent.setReturnDate(formatDate(returnDate));
-        updateRent(rent);
-        log.info(Constants.EXPIRED_PERIOD + rent);
-        return Optional.of(rent);
+        if (rent.getId() != 0) {
+            LocalDate endDate = LocalDate.now().plusMonths(1);
+            rent.setReturnDate(formatDate(endDate));
+            updateRent(rent);
+            log.info(Constants.EXPIRED_PERIOD + rent);
+            return Optional.of(rent);
+        } else {
+            getNotFoundMessage(Rent.class, rentId);
+            return Optional.empty();
+        }
     }
 
     public List<TemporaryCard> watchExpiringCards(long cardId) {
@@ -167,11 +175,16 @@ public abstract class AbstractDataProvider {
 
     public Optional<LibraryCard> expireCardPeriod(long cardId) {
         TemporaryCard card = getTemporaryCard(cardId);
-        LocalDate endDate = dateFromString(card.getEndDate()).plusDays(7);
-        card.setEndDate(formatDate(endDate));
-        updateTemporaryCard(card);
-        log.info(Constants.EXPIRED_PERIOD + card);
-        return Optional.of(card);
+        if (card.getId() != 0) {
+            LocalDate endDate = LocalDate.now().plusMonths(6);
+            card.setEndDate(formatDate(endDate));
+            updateTemporaryCard(card);
+            log.info(Constants.EXPIRED_PERIOD + card);
+            return Optional.of(card);
+        } else {
+            getNotFoundMessage(TemporaryCard.class, cardId);
+            return Optional.empty();
+        }
     }
 
     // CRUD

@@ -14,11 +14,11 @@ public class TestData {
     public final PerpetualCard p1 = new PerpetualCard(21, "Same", "Person", "20.02.2014", "Google", "Good Boy");
     public final PerpetualCard p2 = new PerpetualCard(22, "Jonh", "Doe", "13.05.1998", "Netflix", "Our sponsor");
 
-    public final TemporaryCard t1 = new TemporaryCard(31, "Maxim", "Mokhov", "12.09.1984", "SFedU", "15.12.2022", "15.01.2023");
-    public final TemporaryCard t2 = new TemporaryCard(32, "Kirill", "Svalkin", "05.02.2000", "GreenAtom", "15.03.2022", "15.01.2023");
+    public final TemporaryCard t1 = new TemporaryCard(31, "Maxim", "Mokhov", "12.09.1984", "SFedU", "15.12.2022", "15.05.2023");
+    public final TemporaryCard t2 = new TemporaryCard(32, "Kirill", "Svalkin", "05.02.2000", "GreenAtom", "15.03.2022", "15.02.2021");
 
     public final Rent r1 = new Rent(41, b1, t1, "14.09.2022", "14.01.2023");
     public final Rent r2 = new Rent(42, b2, t2, "06.12.2022", "06.02.2023");
-    public final Rent r3 = new Rent(43, b3, p1, "10.10.2022", "10.01.2023");
-    public final Rent r4 = new Rent(44, b4, p2, "11.12.2022", "11.02.2023");
+    public final Rent r3 = new Rent(43, b3, p1, "10.04.2022", "10.10.2022");
+    public final Rent r4 = new Rent(44, b4, p2, "11.05.2022", "11.06.2022");
 }

@@ -4,9 +4,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.sfedu.bibliohub.model.bean.Rent;
+import ru.sfedu.bibliohub.model.bean.TemporaryCard;
 import ru.sfedu.bibliohub.utils.TestData;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public abstract class UseCaseTest extends TestData {
@@ -14,6 +17,25 @@ public abstract class UseCaseTest extends TestData {
 
     @Test
     void test() {
+    }
+
+
+    @Test
+    void giveBookPos() {
+        LocalDate today = LocalDate.now();
+        String todayString = dp.formatDate(today);
+        LocalDate ret = dp.calculateReturnDate(today.getYear(), today.getMonthValue(), today.getDayOfMonth()).get();
+        String retString = dp.formatDate(ret);
+
+        Optional<Rent> actualRent = dp.giveBook(b1.getId(), t1.getId());
+        Rent expectedRent = new Rent(actualRent.get().getId(), b1, t1, todayString, retString);
+        Assertions.assertEquals(Optional.of(expectedRent), actualRent);
+        dp.deleteRent(expectedRent.getId());
+    }
+
+    @Test
+    void giveBookNeg() {
+        Assertions.assertEquals(Optional.empty(), dp.giveBook(b4.getId(), t2.getId()));
     }
 
 
@@ -44,9 +66,25 @@ public abstract class UseCaseTest extends TestData {
 
 
     @Test
+    void watchExpiringRentsPos() {
+        List<Rent> rents = List.of(r1, r2, r3, r4);
+        List<Rent> expectedRents = rents.stream().filter((e) -> dp.dateFilter(e.getReturnDate())).toList();
+        Assertions.assertEquals(expectedRents, dp.watchExpiringRents(0));
+    }
+
+    @Test
+    void watchExpiringRentsNeg() {
+        List<Rent> rents = List.of(r3, r4);
+        Assertions.assertNotEquals(rents, dp.watchExpiringRents(0));
+    }
+
+
+    @Test
     void expireRentPeriodPos() {
-        r1.setReturnDate("21.1.2023");
+        LocalDate returnDate = LocalDate.now().plusMonths(1);
+        r1.setReturnDate(dp.formatDate(returnDate));
         Assertions.assertEquals(Optional.of(r1), dp.expireRentPeriod(r1.getId()));
+        r1.setReturnDate("14.01.2023");
     }
 
     @Test
@@ -56,9 +94,25 @@ public abstract class UseCaseTest extends TestData {
 
 
     @Test
+    void watchExpiringCardsPos() {
+        List<TemporaryCard> cards = List.of(t1, t2);
+        List<TemporaryCard> expectedCards = cards.stream().filter((e) -> dp.dateFilter(e.getEndDate())).toList();
+        Assertions.assertEquals(expectedCards, dp.watchExpiringCards(0));
+    }
+
+    @Test
+    void watchExpiringCardsNeg() {
+        List<TemporaryCard> cards = List.of(t2);
+        Assertions.assertNotEquals(cards, dp.watchExpiringCards(0));
+    }
+
+
+    @Test
     void expireCardPeriodPos() {
-        t1.setEndDate("22.1.2023");
+        LocalDate returnDate = LocalDate.now().plusMonths(6);
+        t1.setEndDate(dp.formatDate(returnDate));
         Assertions.assertEquals(Optional.of(t1), dp.expireCardPeriod(t1.getId()));
+        t1.setEndDate("15.05.2023");
     }
 
     @Test
