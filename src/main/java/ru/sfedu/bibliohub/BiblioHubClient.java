@@ -9,14 +9,13 @@ import ru.sfedu.bibliohub.api.DataProviderXml;
 import ru.sfedu.bibliohub.utils.Constants;
 import ru.sfedu.bibliohub.utils.TestData;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 public class BiblioHubClient {
     private static final Logger log = LogManager.getLogger(BiblioHubClient.class);
     private static AbstractDataProvider dp;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         checkArgumentsCount(args);
         dp = getDataProvider(args[0]);
         if (dp.getRents().isEmpty()) loadSampleData();
@@ -45,7 +44,7 @@ public class BiblioHubClient {
         }
     }
 
-    private static AbstractDataProvider getDataProvider(String dataProviderSource) throws IOException {
+    private static AbstractDataProvider getDataProvider(String dataProviderSource) {
         if (dataProviderSource.equalsIgnoreCase(Constants.XML)) return new DataProviderXml();
         else if (dataProviderSource.equalsIgnoreCase(Constants.CSV)) return new DataProviderCsv();
         else if (dataProviderSource.equalsIgnoreCase(Constants.JDBC)) return new DataProviderJdbc();
