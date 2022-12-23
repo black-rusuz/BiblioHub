@@ -1,5 +1,7 @@
 package ru.sfedu.bibliohub.utils;
 
+import ru.sfedu.bibliohub.model.bean.PerpetualCard;
+
 public class Constants {
     // FILE
     public static final String XML_PATH = "XML_PATH";
@@ -48,8 +50,10 @@ public class Constants {
     public static final String NOT_FOUND = "%s ID %d not found";
     public static final String DATE_FORMAT = "%d.%d.%d";
     public static final String NEW_RENT = "Created rent:\n";
+    public static final String CARD_PERPETUAL = "Card is perpetual. Reason: ";
     public static final String CARD_EXPIRED = "Card is expired";
     public static final String CARD_NOT_EXPIRED = "Card is not expired";
+    public static final String RETURN_DATE = "Return date: ";
     public static final String EXPIRING_RENTS = "Expiring rents:\n";
     public static final String EXPIRING_CARDS = "Expiring cards:\n";
     public static final String EXPIRED_PERIOD = "Expired period:\n";

@@ -145,7 +145,10 @@ public abstract class AbstractDataProvider {
      */
     public boolean validateCard(long cardId) {
         PerpetualCard pCard = getPerpetualCard(cardId);
-        if (pCard.getId() != 0) return true;
+        if (pCard.getId() != 0) {
+            log.info(Constants.CARD_PERPETUAL + pCard.getReason());
+            return true;
+        };
 
         TemporaryCard tCard = getTemporaryCard(cardId);
         LocalDate expireDate = dateFromString(tCard.getEndDate());
@@ -171,6 +174,7 @@ public abstract class AbstractDataProvider {
     public Optional<LocalDate> calculateReturnDate(int startYear, int startMonth, int startDay) {
         LocalDate startDate = LocalDate.of(startYear, startMonth, startDay);
         LocalDate returnDate = startDate.plusDays(14);
+        log.info(Constants.RETURN_DATE + formatDate(returnDate));
         return Optional.of(returnDate);
     }
 
