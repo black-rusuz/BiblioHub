@@ -14,7 +14,13 @@ public class TestArea extends TestData {
     protected final AbstractDataProvider dp = new DataProviderJdbc();
 
     @Test
-    void test() throws IOException {
-        BiblioHubClient.main("XML GIVEBOOK 11 21".split(" "));
+    void test() {
+        BiblioHubClient.main("XML giveBook 11 21".split(" "));
+        BiblioHubClient.main("XML validateCard 21".split(" "));
+        BiblioHubClient.main("CSV calculateReturnDate 2022 12 23".split(" "));
+        BiblioHubClient.main("CSV watchExpiringRents 41".split(" "));
+        BiblioHubClient.main("CSV expireRentPeriod 41".split(" "));
+        BiblioHubClient.main("JDBC watchExpiringCards 31".split(" "));
+        BiblioHubClient.main("JDBC expireCardPeriod 31".split(" "));
     }
 }
