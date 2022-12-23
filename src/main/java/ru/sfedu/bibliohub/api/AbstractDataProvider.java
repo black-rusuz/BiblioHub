@@ -72,6 +72,7 @@ public abstract class AbstractDataProvider {
 
     /**
      * Формат даты
+     *
      * @param date Дата
      * @return Строка формата "дд.мм.гггг"
      */
@@ -81,6 +82,7 @@ public abstract class AbstractDataProvider {
 
     /**
      * Получить LocalDate из форматированной строки
+     *
      * @param date Строка формата "дд.мм.гггг"
      * @return Дата
      */
@@ -101,6 +103,7 @@ public abstract class AbstractDataProvider {
 
     /**
      * Выдача книги читателю
+     *
      * @param bookId ID книги
      * @param cardId ID читательского билета
      * @return Запись об аренде книги
@@ -136,6 +139,7 @@ public abstract class AbstractDataProvider {
 
     /**
      * Проверка актуальности читательского билета
+     *
      * @param cardId ID билета
      * @return true если билет актуален
      */
@@ -158,9 +162,10 @@ public abstract class AbstractDataProvider {
 
     /**
      * Расчёт даты возврата книги
-     * @param startYear Текущий год
+     *
+     * @param startYear  Текущий год
      * @param startMonth Текущий месяц
-     * @param startDay Текущий день
+     * @param startDay   Текущий день
      * @return Дата возврата книги
      */
     public Optional<LocalDate> calculateReturnDate(int startYear, int startMonth, int startDay) {
@@ -171,6 +176,7 @@ public abstract class AbstractDataProvider {
 
     /**
      * Проверить входит ли дата в диапазон от текущего момента до следующих двух недель
+     *
      * @param rentDate дата для проверки
      * @return true если осталось более 2 недель до наступления даты
      */
@@ -183,6 +189,7 @@ public abstract class AbstractDataProvider {
 
     /**
      * Просмотр записей об аренды со сроком возврата менее 2 недель
+     *
      * @param rentId ID аренды
      * @return Список записей
      */
@@ -197,6 +204,7 @@ public abstract class AbstractDataProvider {
 
     /**
      * Продлить срок аренды книги
+     *
      * @param rentId ID аренды
      * @return Обновлённая запись об аренде
      */
@@ -216,6 +224,7 @@ public abstract class AbstractDataProvider {
 
     /**
      * Просмотр временных читательских билетов с оставшимся сроком действия менее 2 недель
+     *
      * @param cardId ID билета
      * @return Список записей
      */
@@ -229,7 +238,8 @@ public abstract class AbstractDataProvider {
     }
 
     /**
-     * Продлить срок действия временной билета
+     * Продлить срок действия временного билета
+     *
      * @param cardId ID аренды
      * @return Обновлённый билет
      */

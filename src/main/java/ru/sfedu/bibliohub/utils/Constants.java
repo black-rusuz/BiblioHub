@@ -36,6 +36,14 @@ public class Constants {
     public static final String JDBC = "JDBC";
     public static final String CSV = "CSV";
 
+    public static final String GIVE_BOOK = "GIVEBOOK";
+    public static final String VALIDATE_CARD = "VALIDATECARD";
+    public static final String CALCULATE_RETURN_DATE = "CALCULATERETURNDATE";
+    public static final String WATCH_EXPIRING_RENTS = "WATCHEXPIRINGRENTS";
+    public static final String EXPIRE_RENT_PERIOD = "EXPIRERENTPERIOD";
+    public static final String WATCH_EXPIRING_CARDS = "WATCHEXPIRINGCARDS";
+    public static final String EXPIRE_CARD_PERIOD = "EXPIRECARDPERIOD";
+
     // Info
     public static final String NOT_FOUND = "%s ID %d not found";
     public static final String DATE_FORMAT = "%d.%d.%d";

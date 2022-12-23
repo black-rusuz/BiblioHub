@@ -16,11 +16,6 @@ public abstract class UseCaseTest extends TestData {
     AbstractDataProvider dp;
 
     @Test
-    void test() {
-    }
-
-
-    @Test
     void giveBookPos() {
         LocalDate today = LocalDate.now();
         String todayString = dp.formatDate(today);
